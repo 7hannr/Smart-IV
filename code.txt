@@ -1,1 +1,93 @@
+espcam코드의 일부이다.
+카메라의 사물인식 과정코드이다.
+
+/A: FFF                       Angle을 이용해서 L,R,F (좌회전, 우회전, 직진)을 결정
+//B: Brake                     Distance를 이용해서 FF/F/S/SS (FastFast, Fast, Slow,SlowSlow) 결정
+//C: FFL                       Case마다 결정된 변수를 A~M으로 변경해 넘겨줌
+//D: FFR
+//E: FF
+//F: FL
+//G: FR
+//H: SF
+//I : SL
+//J: SR
+//K: SSF
+//L: SSL
+//M: SSR
+
+int Left_motor_P=9;
+int Left_motor_N=6;
+  // 파이썬에서 작성한 경우의 수에 대한 각각의 바퀴 회전수 입력 코드
+  if(c == 'K'){
+  digitalWrite(Right_motor_P,LOW);
+  digitalWrite(Right_motor_N,HIGH);
+  analogWrite(Right_motor_P,0);
+  analogWrite(Right_motor_N,60);                   #오른쪽바퀴,왼쪽바퀴속도 모두 60
+  digitalWrite(Left_motor_P,HIGH);
+  digitalWrite(Left_motor_N,LOW);  
+  analogWrite(Left_motor_P,60);
+  analogWrite(Left_motor_N,0);
+  }
+  if(c == 'L'){
+  digitalWrite(Right_motor_P,LOW);
+  digitalWrite(Right_motor_N,HIGH);
+  analogWrite(Right_motor_P,0);
+  analogWrite(Right_motor_N,60);                 #오른쪽바퀴60, 왼쪽바퀴 30
+  digitalWrite(Left_motor_P,HIGH);
+  digitalWrite(Left_motor_N,LOW);  
+analogWrite(Left_motor_P,30);
+  analogWrite(Left_motor_N,0);
+  }
+  if(c == 'M'){
+  digitalWrite(Right_motor_P,LOW);
+  digitalWrite(Right_motor_N,HIGH);
+  analogWrite(Right_motor_P,0);
+  analogWrite(Right_motor_N,30);                 #오른쪽바퀴30, 왼쪽바퀴 60
+  digitalWrite(Left_motor_P,LOW);
+  digitalWrite(Left_motor_N,HIGH);
+  analogWrite(Left_motor_P,60);
+  analogWrite(Left_motor_N,0);
+   }
+}
+코드의 일부다.
+위에 코드중 바퀴의 각도를 설정해 모터가 움직이도록 설정했다.
+
+2.esp cam code
+
+#include "esp_wifi.h"
+#include "esp_camera.h"
+#include <WiFi.h>
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
+
+// Setup Access Point Credentials
+const char* ssid1 = "ESP32-CAM Robot";
+const char* password1 = "1234567890";
+
+extern volatile unsigned int  motor_speed;
+extern void robot_stop();
+extern void robot_setup();
+extern uint8_t robo;
+extern volatile unsigned long previous_time;        
+extern volatile unsigned long move_interval; 
+
+#define CAMERA_MODEL_AI_THINKER
+#define PWDN_GPIO_NUM     32
+#define RESET_GPIO_NUM    -1
+#define XCLK_GPIO_NUM      0
+#define SIOD_GPIO_NUM     26
+#define SIOC_GPIO_NUM     27
+
+#define Y9_GPIO_NUM       35
+#define Y8_GPIO_NUM       34
+#define Y7_GPIO_NUM       39
+#define Y6_GPIO_NUM       36
+#define Y5_GPIO_NUM       21
+#define Y4_GPIO_NUM       19
+#define Y3_GPIO_NUM       18
+#define Y2_GPIO_NUM        5
+#define VSYNC_GPIO_NUM    25
+#define HREF_GPIO_NUM     23
+#define PCLK_GPIO_NUM     22
+
 
